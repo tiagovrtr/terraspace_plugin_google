@@ -14,14 +14,15 @@ module TerraspacePluginGoogle::Interfaces
       if exist?(bucket)
         logger.debug "Bucket already exist: #{bucket}"
       else
+        location = @info["location"]
         logger.info "Creating bucket: #{bucket}"
-        create_bucket(bucket)
+        create_bucket(bucket, location: location)
       end
     end
 
-    def create_bucket(bucket)
+    def create_bucket(bucket, location: nil)
       c = TerraspacePluginGoogle::Interfaces::Config.instance.config.gcs
-      storage.create_bucket(bucket) do |b|
+      storage.create_bucket(bucket, location: location) do |b|
         b.versioning = c.versioning
       end
     end
